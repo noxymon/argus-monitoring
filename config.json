@@ -1,0 +1,10 @@
+{
+  "configList": [
+    {
+      "type": "PROCESS",
+      "healthCheckUrl": null,
+      "processName": "complete-0.1-all.jar",
+      "commandLine": "./start-gedit.sh"
+    }
+  ]
+}
