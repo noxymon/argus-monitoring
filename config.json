@@ -1,9 +1,9 @@
 {
   "configList": [
     {
-      "type": "PROCESS",
-      "healthCheckUrl": null,
-      "processName": "complete-0.1-all.jar",
+      "type": "http",
+      "healthCheckUrl": "http://192.168.0.3/actuator/info",
+      "processName": null,
       "commandLine": "./start-gedit.sh"
     }
   ]

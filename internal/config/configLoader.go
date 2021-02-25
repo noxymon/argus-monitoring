@@ -22,16 +22,16 @@ type ConfigLoader struct {
 }
 
 func (c ConfigLoader) Load() (*ArgusConfig, error) {
-	file, err := ioutil.ReadFile(c.ConfigPath)
+	file, err := ioutil.ReadFile(c.ConfigPath + "/config.json")
 
-	if(err!=nil){
+	if err != nil {
 		return nil, errors.New("error on opening json")
 	}
 
 	var loadedConfig ArgusConfig
 	err = json.Unmarshal(file, &loadedConfig)
 
-	if(err!=nil){
+	if err != nil {
 		return nil, errors.New("Failed on deserializing json.")
 	}
 

@@ -1,40 +1,29 @@
 package main
 
 import (
+	"argus/internal"
 	"flag"
 	"github.com/go-co-op/gocron"
-	"log"
 	"os"
 	"path/filepath"
 	"time"
 )
 
-
-
 func main() {
-	interval := flag.Int("interval", 2, "Interval of schedule check in seconds")
-	//configPath := flag.String("config", currentPath()+"/config.json", "location of config path")
-	//watcherGateway := internal.WatcherGateway{ConfigPath: *configPath}
-	location, err := time.LoadLocation("Asia/Jakarta")
-	if err != nil {
-		panic("failed!!!")
-	}
-	scheduler := gocron.NewScheduler(location)
-	scheduler.Every(interval).Second().Do(func() {
-		log.Println(" Hello Schedule !")
-	})
+	interval := *flag.Int("interval", 2, "Interval of schedule check in seconds")
+
+	configPath := *flag.String("config", currentPath(), "location of config path")
+	watcherGateway := internal.WatcherGateway{ConfigPath: configPath}
+
+	scheduler := createScheduler()
+	scheduler.Every(interval).Second().Do(watcherGateway.Watch)
 	scheduler.StartBlocking()
 }
 
-func startCron(interval *int) {
-	log.Println("create cron schedule")
-	location, err := time.LoadLocation("Asia/Jakarta")
-	if err != nil {
-		panic("failed!!!")
-	}
+func createScheduler() *gocron.Scheduler {
+	location, _ := time.LoadLocation("Asia/Jakarta")
 	scheduler := gocron.NewScheduler(location)
-	scheduler.Every(interval).Second().Do(showMessage)
-	scheduler.StartBlocking()
+	return scheduler
 }
 
 func currentPath() string {
@@ -43,8 +32,4 @@ func currentPath() string {
 		panic("failed get current path")
 	}
 	return currentPath
-}
-
-func showMessage() {
-	log.Println(" Hello Schedule !")
 }

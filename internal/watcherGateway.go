@@ -4,6 +4,7 @@ import (
 	"argus/internal/config"
 	"argus/internal/watcher"
 	"errors"
+	"log"
 )
 
 type WatcherGateway struct {
@@ -11,17 +12,18 @@ type WatcherGateway struct {
 }
 
 func (w WatcherGateway) Watch() error {
+	log.Println("Watch Started")
 	configLoader := config.ConfigLoader{ConfigPath: w.ConfigPath}
 	argusLoad, err := configLoader.Load()
 
-	if(err!=nil){
+	if err != nil {
 		return errors.New("error loading loadedConfig")
 	}
 
 	for _, loadedConfig := range argusLoad.ConfigList {
 		factory := watcher.WatcherFactory{}
 		watcherCreated, err := factory.CreateWatcher(loadedConfig.Type)
-		if(err==nil){
+		if err == nil {
 			watcherCreated.Watch(loadedConfig)
 		}
 	}
