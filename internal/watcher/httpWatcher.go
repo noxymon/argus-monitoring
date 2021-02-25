@@ -19,15 +19,15 @@ func (h HttpWatcher) Watch(config config.Config) error {
 }
 
 func (h HttpWatcher) isAlive(config config.Config) bool {
-	var alive = false
 	client := httpclient.NewClient()
 	get, err := client.Get(config.HealthCheckURL, nil)
 	if err != nil {
-		alive = false
+		return false
 	}
 
 	if get.StatusCode >= 200 && get.StatusCode <= 299 {
-		alive = true
+		return true
 	}
-	return alive
+
+	return false
 }
